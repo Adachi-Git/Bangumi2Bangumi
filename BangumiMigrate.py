@@ -2,17 +2,21 @@ import json
 import time
 import logging
 import requests
+import os
 from tqdm import tqdm
+from concurrent.futures import wait
 from requests.exceptions import RequestException
+from concurrent.futures import ThreadPoolExecutor
+import re
 
 # 设置日志级别
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # 配置大号ID和大小号TOKEN
 API_SERVER = "https://api.bgm.tv"
 USERNAME_OR_UID = ""  # 大号ID
 ACCESS_TOKEN = ""   # 大号
-ACCESS_TOKEN_2 =""  # 小号
+ACCESS_TOKEN_2 = ""  # 小号
 
 # 全局等待时间
 WAIT_TIME = 5
@@ -20,7 +24,6 @@ WAIT_TIME = 5
 # 重试次数
 MAX_RETRIES = 3
 
-# 用大号token获取大号收藏
 def get_json_with_bearer_token(url):
     """
     发送GET请求获取JSON格式数据，使用Bearer令牌进行身份验证。
@@ -111,7 +114,7 @@ def load_user_collections():
     collections = load_data_until_finish(endpoint, limit, "user collections", show_progress=True)
     logging.info(f"loaded {len(collections)} collections")
     # 将用户收藏数据写入本地文件collections.json
-    with open("collections.json", "w", encoding="u8") as f:
+    with open("collections.json", "w", encoding="utf-8") as f:
         json.dump(collections, f, ensure_ascii=False, indent=4)
 
     return collections
@@ -122,37 +125,39 @@ def migrate_collections():
         data_from_json = json.load(f)
 
     # 处理JSON数据并进行迁移
-    for item in data_from_json:
-        subject_id = item["subject_id"]
-        status = item["type"] 
-        rate = item["rate"]
-        comment = item["comment"]
-        private = item["private"]
-        tags = item["tags"]
-        tags_list = tags if tags else [""]
+    with ThreadPoolExecutor() as executor:
+        futures = []
 
-        url = f'{API_SERVER}/v0/users/-/collections/{subject_id}'
-        data = {
-            "type": status,
-            "rate": rate,
-            "comment": comment,
-            "private": private,
-            "tags": tags_list
-        }
+        for item in data_from_json:
+            subject_id = item["subject_id"]
+            status = item["type"] 
+            rate = item["rate"]
+            comment = item["comment"]
+            private = item["private"]
+            tags = item["tags"]
+            tags_list = tags if tags else [""]
 
-        # 发送请求
-        with requests.Session() as session:
-            errors = make_request(session, url, method='POST', data=data)
+            url = f'{API_SERVER}/v0/users/-/collections/{subject_id}'
+            if comment is not None and isinstance(comment, str):
+                comment = re.sub(r'[\x00-\x1F\x7F-\x9F\u200B-\u200F\u2028-\u202F\u2060-\u206F]', '', comment)
+            data = {
+                "type": status,
+                "rate": rate,
+                "comment": comment,
+                "private": private,
+                "tags": tags_list
+            }
 
-            if errors:
-                # 处理请求失败的信息，例如记录到日志中
-                for error_message in errors:
-                    logging.error(error_message)
+            # 提交任务到线程池
+            future = executor.submit(make_request, url, method='POST', data=data)
+            futures.append(future)
 
-        # 等待一定时间
-        time.sleep(WAIT_TIME)
+        # 等待所有任务完成
+        wait(futures)
 
-def make_request(session, url, method='GET', data=None, max_retries=3, wait_time=5):
+    logging.info("收藏信息迁移完成")
+
+def make_request(url, method='GET', data=None, max_retries=3, wait_time=5):
     base_headers = {
         'accept': '*/*',
         'Content-Type': 'application/json',
@@ -165,10 +170,10 @@ def make_request(session, url, method='GET', data=None, max_retries=3, wait_time
     for attempt in range(max_retries + 1):
         try:
             # 发起HTTP请求
-            response = session.request(method, url, headers=base_headers, json=data)
+            response = requests.request(method, url, headers=base_headers, json=data)
             response.raise_for_status()
 
-            # 记录请求信息
+            # 记录请求信息，包括时间戳
             logging.info(f"Request to {url} - Status Code: {response.status_code}")
             logging.debug("Request Headers:")
             logging.debug(base_headers)
@@ -181,6 +186,11 @@ def make_request(session, url, method='GET', data=None, max_retries=3, wait_time
             errors.append(error_message)
             logging.error(error_message)
 
+            # 将错误信息写入文件
+            with open("failed_requests.json", "a", encoding="utf-8") as f:
+                json.dump({"url": url, "error_message": error_message}, f, ensure_ascii=False, indent=4)
+                f.write('\n')
+
             if attempt < max_retries:
                 logging.warning(f"Retrying request to {url} (attempt {attempt + 1}/{max_retries})...")
                 time.sleep(wait_time)
@@ -188,6 +198,10 @@ def make_request(session, url, method='GET', data=None, max_retries=3, wait_time
     return errors  # 返回请求失败的信息列表
 
 def main():
+    # 在程序开始时清空 failed_requests.json 文件
+    with open("failed_requests.json", "w", encoding="utf-8") as clear_file:
+        clear_file.write("")
+        
     # 检查是否存在本地的simplified_collections.json
     simplified_collections_exists = os.path.isfile('simplified_collections.json')
 
@@ -214,7 +228,7 @@ def main():
                 }
                 simplified_collections.append(simplified_item)
 
-            with open("simplified_collections.json", "w", encoding="u8") as f:
+            with open("simplified_collections.json", "w", encoding="utf-8") as f:
                 json.dump(simplified_collections, f, ensure_ascii=False, indent=4)
 
     logging.info("开始进行收藏信息迁移...")
@@ -223,5 +237,4 @@ def main():
     logging.info("完成")
 
 if __name__ == "__main__":
-    import os  # 添加导入 os 模块
     main()
