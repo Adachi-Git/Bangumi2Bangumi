@@ -4,7 +4,7 @@ BangumiMigrate，一个用于将您在    [Bangumi](https://bgm.tv/)    网站�
 
 ## 已知问题
 BangumiMigrate-Csv版还没写获取收藏导出为csv，用的    [Bangumi](https://github.com/czy0729/Bangumi)    本地备份导出csv。
-
+我认为 CSV 在某种程度上更方便，所以还没有丢弃这个版本。
 ## 使用前准备
 
 在使用之前，请确保您已经安装了必要的依赖库，您可以使用以下命令安装：
