@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 import time
 import logging
+from concurrent.futures import ThreadPoolExecutor, wait
 
 # 提前定义 API 地址和常量
 API_URL = 'https://api.bgm.tv/v0/users/-/collections/'
@@ -30,7 +31,7 @@ def make_request(session, url, method='GET', data=None):
         'accept': '*/*',
         'Content-Type': 'application/json',
         'User-Agent': 'Adachi/BangumiMigrate(https://github.com/Adachi-Git/BangumiMigrate)',  # 替换成你的自定义 User-Agent
-        'Authorization': 'Bearer *****************************'  # 替换成你的访问令牌
+        'Authorization': 'Bearer **********************************'  # 替换成你的访问令牌
     }
 
     try:
@@ -61,6 +62,10 @@ def process_row(row):
     # 动态生成请求的 URL
     url = f'{API_URL}{collection_id}'
 
+     # 处理评论部分，去除不可见字符
+    if comment is not None and isinstance(comment, str):
+        comment = re.sub(r'[\x00-\x1F\x7F-\x9F\u200B-\u200F\u2028-\u202F\u2060-\u206F]', '', comment)
+        
     # 准备请求体数据
     data = {
         "type": type_value,
@@ -77,9 +82,21 @@ def process_row(row):
     # 等待一定时间
     time.sleep(WAIT_TIME)
 
-# 读取 CSV 文件
-df = pd.read_csv('F:\\Downlord\\1.csv')
+def main():
+    # 读取 CSV 文件
+    df = pd.read_csv('F:\\Downlord\\1.csv')
 
-# 处理每一行数据
-for row in df.itertuples(index=False):
-    process_row(row)
+    # 使用线程池进行并发处理
+    with ThreadPoolExecutor() as executor:
+        futures = []
+
+        # 提交每一行数据的处理任务到线程池
+        for row in df.itertuples(index=False):
+            future = executor.submit(process_row, row)
+            futures.append(future)
+
+        # 等待所有任务完成
+        wait(futures)
+
+if __name__ == "__main__":
+    main()
