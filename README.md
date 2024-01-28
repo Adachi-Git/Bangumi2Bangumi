@@ -2,10 +2,6 @@
 
 BangumiMigrate，一个用于将您在    [Bangumi](https://bgm.tv/)    网站上的收藏数据，从一个账号迁移到另一个账号的工具。通过调用 Bangumi API，您可以更新收藏状态、评分、评价等信息。
 
-## 已知问题
-BangumiMigrate-Csv版还没写获取收藏导出为csv，用的    [Bangumi](https://github.com/czy0729/Bangumi)    本地备份导出csv。
-
-我认为 CSV 在某种程度上更方便，所以还没有丢弃这个版本。
 ## 使用前准备
 
 在使用之前，请确保您已经安装了必要的依赖库，您可以使用以下命令安装：
@@ -31,6 +27,11 @@ pip install tqdm
 2. 根据提示输入相应的信息，选择是否跳过收藏信息的获取。
 
 3. 等待程序执行完毕，完成收藏信息的迁移。
+4. 
+## 已知问题
+BangumiMigrate-Csv版还没写获取收藏导出为csv，用的    [Bangumi](https://github.com/czy0729/Bangumi)    本地备份导出csv。
+
+我认为 CSV 在某种程度上更方便，所以还没有丢弃这个版本。
 
 ## 注意事项
 请确保您的网络连接正常，Bangumi API 可以访问，并且您的令牌设置正确。
