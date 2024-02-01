@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import logging
 from concurrent.futures import ThreadPoolExecutor, wait
+import re
 
 # 提前定义 API 地址和常量
 API_URL = 'https://api.bgm.tv/v0/users/-/collections/'

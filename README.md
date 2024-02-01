@@ -1,35 +1,38 @@
-# BangumiMigrate
+# Bangumi2Bangumi
 
-BangumiMigrate，一个用于将您在    [Bangumi](https://bgm.tv/)    网站上的收藏数据，从一个账号迁移到另一个账号的工具。通过调用 Bangumi API，您可以更新收藏状态、评分、评价等信息。
+Bangumi2Bangumi，一个用于将您在    [Bangumi](https://bgm.tv/)    网站上的收藏数据，从一个账号迁移到另一个账号的工具。通过调用 Bangumi API，您可以更新收藏状态、评分、评价等信息。
 
-## 使用前准备
+## 使用方法
 
-在使用之前，请确保您已经安装了必要的依赖库，您可以使用以下命令安装：
+1.  **安装**: 将存储库克隆到本地计算机。
+
+   ```bash
+   git clone https://github.com/Adachi-Git/Bangumi2Bangumi.git
+   cd Bangumi2Bangumi
+   ```
+
+2. **安装依赖**  
+   ```bash
+   pip install -r requirements.txt
+
+2.  **配置**：创建一个 config.ini 文件，包含您的 API 访问令牌和用户ID
+
+[API_FETCH]
+user_id = 您的UID(设置了用户名之后无法使用 UID ，写用户名即可)
+Aaccess_token = 您的大号
+
+[API_ADD]
+access_token = 您的小号
+
+
+3.  **使用**
 
 ```bash
-pip install requests
-pip install tqdm
+python B2B.py
 ```
-## 配置
-在代码中提供了一些需要配置的参数，以确保工具能够正确运行。以下是需要注意的配置项：
 
-- `USERNAME_OR_UID`: 大号或要获取收藏信息的账户的用户名或用户ID。
-- `ACCESS_TOKEN`: 大号的访问令牌，用于获取收藏信息。
-- `ACCESS_TOKEN_2`: 小号的访问令牌，用于进行收藏信息的迁移。
-
-## 运行
-1. 运行 `BangumiMigrate.py`：
-
-    ```bash
-    python BangumiMigrate.py
-    ```
-    
-2. 根据提示输入相应的信息，选择是否跳过收藏信息的获取。
-
-3. 等待程序执行完毕，完成收藏信息的迁移。
-4. 
 ## 已知问题
-BangumiMigrate-Csv版还没写获取收藏导出为csv，用的    [Bangumi](https://github.com/czy0729/Bangumi)    本地备份导出csv。
+Bangumi2Bangumi-Csv版还没写获取收藏导出为csv，用的    [Bangumi](https://github.com/czy0729/Bangumi)    本地备份导出csv。
 
 我认为 CSV 在某种程度上更方便，所以还没有丢弃这个版本。
 
