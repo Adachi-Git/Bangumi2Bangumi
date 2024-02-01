@@ -6,16 +6,16 @@ Bangumi2Bangumi，一个用于将您在    [Bangumi](https://bgm.tv/)    网站�
 
 1.  **安装**: 将存储库克隆到本地计算机。
 
-   ```bash
-   git clone https://github.com/Adachi-Git/Bangumi2Bangumi.git
-   cd Bangumi2Bangumi
-   ```
+```bash
+git clone https://github.com/Adachi-Git/Bangumi2Bangumi.git
+cd Bangumi2Bangumi
+```
 
 2. **安装依赖**  
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+```bash
+pip install -r requirements.txt
+```
 
 2.  **配置**：创建一个 config.ini 文件，包含您的 API 访问令牌和用户ID
  ```bash
