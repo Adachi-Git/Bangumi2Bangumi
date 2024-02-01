@@ -12,9 +12,11 @@ Bangumi2Bangumi，一个用于将您在    [Bangumi](https://bgm.tv/)    网站�
    ```
 
 2. **安装依赖**  
+
    ```bash
    pip install -r requirements.txt
    ```
+
 2.  **配置**：创建一个 config.ini 文件，包含您的 API 访问令牌和用户ID
  ```bash
 [API_FETCH]
