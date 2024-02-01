@@ -4,7 +4,7 @@ Bangumi2Bangumi，一个用于将您在    [Bangumi](https://bgm.tv/)    网站�
 
 ## 使用方法
 
-1.  **安装**: 将存储库克隆到本地计算机。
+1.  **克隆仓库**:
 
 ```bash
 git clone https://github.com/Adachi-Git/Bangumi2Bangumi.git
@@ -17,7 +17,7 @@ cd Bangumi2Bangumi
 pip install -r requirements.txt
 ```
 
-2.  **配置**：创建一个 config.ini 文件，包含您的 API 访问令牌和用户ID
+3.  **配置**：创建一个 config.ini 文件，包含您的 API 访问令牌和用户ID
  ```bash
 [API_FETCH]
 user_id = 您的UID(设置了用户名之后无法使用 UID ，写用户名即可)
@@ -27,7 +27,7 @@ Aaccess_token = 您的大号
 access_token = 您的小号
  ```
 
-3.  **使用**
+4.  **使用**
 
 ```bash
 python B2B.py
