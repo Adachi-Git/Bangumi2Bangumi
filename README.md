@@ -1,5 +1,9 @@
 # Bangumi2Bangumi
 
+我燃烧你的梦，谁用于不良用途谁m4掉了。
+
+谁用于被封禁账号转移数据谁一家4了。
+
 Bangumi2Bangumi，一个用于将您在    [Bangumi](https://bgm.tv/)    网站上的收藏数据，从一个账号迁移到另一个账号的工具。通过调用 Bangumi API，您可以更新收藏状态、评分、评价等信息。
 
 ## 使用方法
