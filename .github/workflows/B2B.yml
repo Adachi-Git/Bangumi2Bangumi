@@ -1,5 +1,4 @@
-- name: Run B2B.py script
-  run: python B2B.py config.ini
+name: Python Workflow
 
 on:
   push:
@@ -12,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
       
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -22,3 +22,15 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
+      
+    - name: Set up configuration file
+      run: |
+        echo "[API_FETCH]" > config.ini
+        echo "access_token = ${{ secrets.API_FETCH_ACCESS_TOKEN }}" >> config.ini
+        echo "user_id = adachi9" >> config.ini
+        echo "" >> config.ini
+        echo "[API_ADD]" >> config.ini
+        echo "access_token = ${{ secrets.API_ADD_ACCESS_TOKEN }}" >> config.ini
+        
+    - name: Run B2B.py script
+      run: python B2B.py config.ini
