@@ -1,4 +1,5 @@
-name: B2B
+- name: Run B2B.py script
+  run: python B2B.py config.ini
 
 on:
   push:
