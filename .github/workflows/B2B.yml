@@ -1,9 +1,9 @@
-name: B2B
+name: Python Workflow
 
 on:
   push:
     branches:
-      - main
+      - Workflow
   schedule:
     - cron: '0 0 * * *'  # 设置每天 UTC 时间 00:00 触发
 
@@ -15,6 +15,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        ref: Workflow  # 指定分支为 Workflow
       
     - name: Set up Python
       uses: actions/setup-python@v2
