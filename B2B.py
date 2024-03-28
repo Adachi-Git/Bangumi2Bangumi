@@ -9,7 +9,7 @@ if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read('config.ini')
     user_id_fetch = config.get('API_FETCH', 'user_id')
-    access_token_fetch = config.get('API_FETCH', 'Aaccess_token')
+    access_token_fetch = config.get('API_FETCH', 'Access_token')
 
     access_token_add = config.get('API_ADD', 'access_token')
 
