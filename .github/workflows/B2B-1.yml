@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - Workflow
-  schedule: [{ cron: '0 5 * * *' }]
+  schedule: [{ cron: '0 15 * * *' }]
   # 手动触发
   workflow_dispatch:
 
