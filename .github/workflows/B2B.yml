@@ -1,9 +1,11 @@
-name: Python Workflow
+name: B2B
 
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: '0 0 * * *'  # 设置每天 UTC 时间 00:00 触发
 
 jobs:
   build:
