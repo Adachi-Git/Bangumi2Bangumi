@@ -30,7 +30,7 @@ jobs:
     - name: Set up configuration file
       run: |
         echo "[API_FETCH]" > config.ini
-        echo "access_token = ${{ secrets.API_FETCH_ACCESS_TOKEN }}" >> config.ini
+        echo "Access_token = ${{ secrets.API_FETCH_ACCESS_TOKEN }}" >> config.ini
         echo "user_id = adachi9" >> config.ini
         echo "" >> config.ini
         echo "[API_ADD]" >> config.ini
