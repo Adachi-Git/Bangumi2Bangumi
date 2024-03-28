@@ -1,8 +1,7 @@
 # main.py
-
+import configparser
 from bangumi_api_fetch import bangumi_api_fetch
 from bangumi_api_add import bangumi_api_add_collection
-import configparser
 
 if __name__ == "__main__":
     # 从配置文件读取 user_id 、Access_token 和 access_token
