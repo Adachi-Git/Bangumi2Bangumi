@@ -6,7 +6,8 @@ def add_bangumi_collection(entry, access_token):
     subject_id = entry.get('subject_id')
     type = entry.get('type')
     rate = entry.get('rate', 0)
-    private = entry.get('private', True)
+    #private = entry.get('private', True).
+    private = True
     comment = entry.get('comment', '')
     tags = entry.get('tags', [])
 

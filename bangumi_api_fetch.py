@@ -3,14 +3,14 @@ import json
 import configparser
 
 
-def bangumi_api_fetch(user_id, access_token, limit=50):
+def bangumi_api_fetch(user_id, Access_token, limit=50):
     base_url = "https://api.bgm.tv/v0/users"
     collections_endpoint = f"{base_url}/{user_id}/collections"
 
     headers = {
-        'Authorization': 'Bearer ' + access_token,
+        'Authorization': 'Bearer ' + Access_token,
         'accept': 'application/json',
-        'User-Agent': 'Adachi/BangumiMigrate(https://github.com/Adachi-Git/BangumiMigrate)'
+        'User-Agent': 'Adachi/BangumiMigrate(https://github.com/Adachi-Git/Bangumi2Bangumi)'
     }
 
     all_collections = []
@@ -52,21 +52,17 @@ def bangumi_api_fetch(user_id, access_token, limit=50):
     print(f"Bangumi collections saved to {output_filename}")
     return all_collections
 
-import requests
-import json
-
-
 if __name__ == "__main__":
-    # 从配置文件读取 Aaccess_token 和 user_id
+    # 从配置文件读取 Access_token 和 user_id
     config = configparser.ConfigParser()
     config.read('config.ini')
-    Aaccess_token = config.get('API_FETCH', 'Aaccess_token')
+    Access_token = config.get('API_FETCH', 'Access_token')
     user_id = config.get('API_FETCH', 'user_id')
 
     limit = 50
 
     # 获取收藏信息
-    bangumi_collections = bangumi_api_fetch(Aaccess_token, user_id, limit)
+    bangumi_collections = bangumi_api_fetch(Access_token, user_id, limit)
 
     # 打印获取到的收藏信息
     print(bangumi_collections)
